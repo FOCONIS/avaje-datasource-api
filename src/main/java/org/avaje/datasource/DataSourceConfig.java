@@ -2,6 +2,7 @@ package org.avaje.datasource;
 
 import java.sql.Connection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -55,8 +56,12 @@ public class DataSourceConfig {
   private String poolListener;
 
   private boolean offline;
+
+  private boolean failOnStart = true;
   
   private Map<String, String> customProperties;
+  
+  private List<String> customInitQueries;
 
   private DataSourceAlert alert;
 
@@ -484,6 +489,17 @@ public class DataSourceConfig {
   public boolean isOffline() {
     return offline;
   }
+  
+  /**
+   * Return true (default) if the DataSource should be fail on start.
+   * <p>
+   * This enables to initialize the Ebean-Server if the db-server is not yet up.
+   * ({@link DataSourceAlert#dataSourceUp(javax.sql.DataSource)} is fired when DS gets up later.)
+   * </p>
+   */
+  public boolean isFailOnStart() {
+    return failOnStart;
+  }
 
   /**
    * Set to true if the DataSource should be left offline.
@@ -493,10 +509,24 @@ public class DataSourceConfig {
   }
   
   /**
+   * Set to false, if DataSource should not fail on start. (e.g. DataSource is not available)
+   */
+  public void setFailOnStart(boolean failOnStart) {
+    this.failOnStart = failOnStart;
+  }
+  
+  /**
    * Return a map of custom properties for the jdbc driver connection.
    */
   public Map<String, String> getCustomProperties() {
     return customProperties;
+  }
+  
+  /**
+   * Return a list of custom init queries, that are executed before each query.
+   */
+  public List<String> getCustomInitQueries() {
+    return customInitQueries;
   }
 
   /**
@@ -506,6 +536,13 @@ public class DataSourceConfig {
     this.customProperties = customProperties;
   }
 
+  /**
+   * Set custom init queries for each query.
+   */
+  public void setCustomInitQueries(List<String> customInitQueries) {
+    this.customInitQueries = customInitQueries;
+  }
+  
   /**
    * Load the settings from the properties supplied.
    * <p>

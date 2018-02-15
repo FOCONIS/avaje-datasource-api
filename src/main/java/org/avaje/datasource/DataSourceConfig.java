@@ -1,6 +1,7 @@
 package org.avaje.datasource;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,9 @@ public class DataSourceConfig {
   
   private Map<String, String> customProperties;
   
-  private List<String> customInitQueries;
+  private List<String> initSql;
+  
+  private List<String> afterErrorSql;
 
   private DataSourceAlert alert;
 
@@ -523,12 +526,22 @@ public class DataSourceConfig {
   }
   
   /**
-   * Return a list of custom init queries, that are executed before each query.
+   * Return a list of init queries, that are executed after a connection is opened.
    */
-  public List<String> getCustomInitQueries() {
-    return customInitQueries;
+  public List<String> getInitSql() {
+    return initSql;
   }
-
+  
+  /**
+   * Returns the query, that is executed on a connection when it had an error.
+   */
+  /**
+   * @return the afterErrorSql
+   */
+  public List<String> getAfterErrorSql() {
+    return afterErrorSql;
+  }
+  
   /**
    * Set custom properties for the jdbc driver connection.
    */
@@ -539,10 +552,17 @@ public class DataSourceConfig {
   /**
    * Set custom init queries for each query.
    */
-  public void setCustomInitQueries(List<String> customInitQueries) {
-    this.customInitQueries = customInitQueries;
+  public void setInitSql(List<String> initSql) {
+    this.initSql = initSql;
   }
-  
+
+  /**
+   * @param afterErrorSql the afterErrorSql to set
+   */
+  public void setAfterErrorSql(List<String> afterErrorSql) {
+    this.afterErrorSql = afterErrorSql;
+  }
+
   /**
    * Load the settings from the properties supplied.
    * <p>
@@ -590,10 +610,27 @@ public class DataSourceConfig {
     String isoLevel = properties.get("isolationLevel", getTransactionIsolationLevel(isolationLevel));
     this.isolationLevel = getTransactionIsolationLevel(isoLevel);
 
+    this.initSql = parseSql(properties.get("initSql", null));
+    this.afterErrorSql = parseSql(properties.get("afterErrorSql", null));
+
     String customProperties = properties.get("customProperties", null);
     if (customProperties != null && customProperties.length() > 0) {
       this.customProperties = parseCustom(customProperties);
     }
+  }
+  
+  private List<String> parseSql(String sql) {
+    List<String> ret = new ArrayList<>();
+    if (sql != null) {
+      String[] queries = sql.split(";");
+      for (String query : queries) {
+        query = query.trim();
+        if (!query.isEmpty()) {
+          ret.add(query);
+        }
+      }
+    }
+    return ret;
   }
 
   Map<String, String> parseCustom(String customProperties) {

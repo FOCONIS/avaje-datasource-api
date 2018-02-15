@@ -9,13 +9,13 @@
   </parent>
 
   <artifactId>avaje-datasource-api</artifactId>
-  <version>3.2-FOC3-SNAPSHOT</version>
+  <version>3.2-FOC3</version>
 
   <scm>
     <connection>scm:git:https://github.com/ebean-orm/avaje-datasource-api.git</connection>
     <developerConnection>scm:git:git@github.com:FOCONIS/avaje-datasource-api.git</developerConnection>
     <url>https://github.com/ebean-orm/avaje-datasource-api.git</url>
-    <tag>HEAD</tag>
+    <tag>v3.2-FOC3</tag>
   </scm>
 
   <dependencies>

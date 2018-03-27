@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>avaje-datasource-api</artifactId>
-  <version>3.2-FOC4-SNAPSHOT</version>
+  <version>3.3-FOC1-SNAPSHOT</version>
 
   <scm>
     <connection>scm:git:https://github.com/ebean-orm/avaje-datasource-api.git</connection>

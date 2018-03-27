@@ -22,7 +22,7 @@ public class DataSourceConfig {
 
   private int minConnections = 2;
 
-  private int maxConnections = 100;
+  private int maxConnections = 200;
 
   private int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
 
@@ -42,7 +42,7 @@ public class DataSourceConfig {
 
   private int leakTimeMinutes = 30;
 
-  private int maxInactiveTimeSecs = 720;
+  private int maxInactiveTimeSecs = 300;
   
   private int maxAgeMinutes = 0;
   

@@ -64,7 +64,6 @@ public class DataSourceConfig {
   
   private List<String> initSql;
   
-  private List<String> afterErrorSql;
 
   private DataSourceAlert alert;
 
@@ -505,17 +504,17 @@ public class DataSourceConfig {
   }
 
   /**
-   * Set to true if the DataSource should be left offline.
-   */
-  public void setOffline(boolean offline) {
-    this.offline = offline;
-  }
-  
-  /**
    * Set to false, if DataSource should not fail on start. (e.g. DataSource is not available)
    */
   public void setFailOnStart(boolean failOnStart) {
     this.failOnStart = failOnStart;
+  }
+  
+  /**
+   * Set to true if the DataSource should be left offline.
+   */
+  public void setOffline(boolean offline) {
+    this.offline = offline;
   }
   
   /**
@@ -531,23 +530,6 @@ public class DataSourceConfig {
   public List<String> getInitSql() {
     return initSql;
   }
-  
-  /**
-   * Returns the query, that is executed on a connection when it had an error.
-   */
-  /**
-   * @return the afterErrorSql
-   */
-  public List<String> getAfterErrorSql() {
-    return afterErrorSql;
-  }
-  
-  /**
-   * Set custom properties for the jdbc driver connection.
-   */
-  public void setCustomProperties(Map<String, String> customProperties) {
-    this.customProperties = customProperties;
-  }
 
   /**
    * Set custom init queries for each query.
@@ -557,10 +539,10 @@ public class DataSourceConfig {
   }
 
   /**
-   * @param afterErrorSql the afterErrorSql to set
+   * Set custom properties for the jdbc driver connection.
    */
-  public void setAfterErrorSql(List<String> afterErrorSql) {
-    this.afterErrorSql = afterErrorSql;
+  public void setCustomProperties(Map<String, String> customProperties) {
+    this.customProperties = customProperties;
   }
 
   /**
@@ -611,7 +593,7 @@ public class DataSourceConfig {
     this.isolationLevel = getTransactionIsolationLevel(isoLevel);
 
     this.initSql = parseSql(properties.get("initSql", null));
-    this.afterErrorSql = parseSql(properties.get("afterErrorSql", null));
+    this.failOnStart = properties.getBoolean("failOnStart", failOnStart);
 
     String customProperties = properties.get("customProperties", null);
     if (customProperties != null && customProperties.length() > 0) {
